@@ -24,6 +24,7 @@ public abstract class TestBase {
 
     @AfterEach
     protected void tearDown() {
+        waitForSecond(2);
         //sayfayı kapat
         driver.quit();
         System.out.println("AfterEach");
