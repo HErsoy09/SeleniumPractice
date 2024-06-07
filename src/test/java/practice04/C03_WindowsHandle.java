@@ -56,6 +56,8 @@ public class C03_WindowsHandle extends TestBase {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOf(emailDogrulamaMetni));
 
+        System.out.println(emailDogrulamaMetni.getText());
+
         Assertions.assertTrue(emailDogrulamaMetni.getText().contains(emailAddress));
 
         //SWITCHTO FAKEMAIL

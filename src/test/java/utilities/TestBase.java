@@ -8,6 +8,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 
+import java.awt.*;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyEvent;
 import java.time.Duration;
 
 public abstract class TestBase {
@@ -68,4 +71,41 @@ public abstract class TestBase {
     public void switchToWindow (int index) {
         driver.switchTo().window(driver.getWindowHandles().toArray()[index].toString());
     }
+
+    //File Upload ROBOT CLASS
+    public void uploadFilePath(String dosyaYolu) {
+        try {
+            waitForSecond(3); // 3 saniye bekletir. Bu, kodun başka işlemler için hazır olmasını sağlar.
+
+            //Verilen Dosya yolunu bir StringSelection objectine dönüştürürüz
+            StringSelection stringSelection = new StringSelection(dosyaYolu);
+
+            //verilen stringSelection'i (bu durumda dosya yolu), daha sonra başka bir yere yapıştırmak üzere siste
+            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
+
+            // Robot sınıfından bir object olustururuz, Bu class javadan gelir ve klavye ve mouse etkileşimlerini
+            Robot robot = new Robot();
+
+            // CTRL+V tuslarina basar dolayisiyla panodaki veriyi yapıştırır.
+            robot.keyPress(KeyEvent.VK_CONTROL);
+            robot.keyPress(KeyEvent.VK_V);
+
+            // CTRL ve V tuşlarından elini kaldirir
+            robot.keyRelease(KeyEvent.VK_CONTROL);
+            robot.keyRelease(KeyEvent.VK_V);
+
+            // 3 saniye bekler, bu süre içerisinde yapıştırılan verinin işlenmesini sağlar.
+            robot.delay(1000);
+
+            // ENTER tuşuna basarak yapıştırma işlemini onaylar veya diyalog penceresini kapatır.
+            robot.keyPress(KeyEvent.VK_ENTER);
+            robot.keyRelease(KeyEvent.VK_ENTER);
+
+            // Sonraki işlemler için ek 3 saniye bekler.
+            robot.delay(1000);
+        } catch (Exception ignored) {
+            // Herhangi bir hata oluşursa, bu hata yoksayılır.
+        }
+    }
+
 }
